@@ -73,6 +73,26 @@ loadScript('//cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js',functi
 		currentpose = pose.lavel;
 	    }
 	}
+	judge = function judge() {
+	    video = document.getElementById("video")
+            navigator.mediaDevices.getUserMedia({
+		video: true,
+		audio: false,
+            }).then(stream => {
+		video.srcObject = stream;
+		video.play()
+            }).catch(e => {
+		console.log(e)
+            })
+	    for (let i = 0;i<10;i++) {
+		ary.push(prediction[i] / 10);
+	    }
+	    aryMax = function (a, b) {return Math.max(a, b);}
+	    max = ary.reduce(aryMax);
+	    if (max > 60) {
+		currentpose = pose.lavel;
+	    }
+	}
 	function drawPose(pose) {
 	    if (webcam.canvas) {
 		ctx.drawImage(webcam.canvas, 0, 0);
@@ -92,7 +112,8 @@ loadScript('//cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js',functi
 //alert("1つ目のポーズ");
 //init();
 //loop();
-predict();
+//predict();
+judge();
 console.log(currentpose);
 if (currentpose != "安楽座_左ねじれ") {
     player.seekTo(40,true);
